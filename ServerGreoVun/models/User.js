@@ -6,15 +6,15 @@ let knex = require('knex')(config.development),
     bookshelf = require('bookshelf')(knex);
 
 var User = bookshelf.Model.extend({
-    tableName: 'uporabniki',
-    sporocila: function () {
-        return this.hasMany(Sporocilo);
+    tableName: 'users',
+    messages: function () {
+        return this.hasMany(Message);
     },
-    lokacija: function () {
-        return this.hasOne(Lokacija)
+    location: function () {
+        return this.hasOne(Location)
     },
-    poznanstva: function () {
-        return this.hasMany(Poznanstvo)
+    friendships: function () {
+        return this.hasMany(Friendship)
     },
     adminGroups: function()
     {
