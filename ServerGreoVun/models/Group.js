@@ -8,13 +8,15 @@ let knex = require('knex')(config.development),
 var Group = bookshelf.Model.extend({
     tableName: 'groups',
     members: function () {
-        return this.hasMany(Sporocilo);
+        return this.hasMany(Users_group);
     },
     admin: function () {
-        return this.hasOne(Lokacija)
+        return this.belongsTo(User);
     },
-    messages:
-   
+    messages: function ()
+    {
+        return this.hasMany(Message);
+    }
 });
 
 
