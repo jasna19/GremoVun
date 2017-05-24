@@ -8,7 +8,7 @@ router.post('/', (req, res, next) => {
 
     var user = new User();
     user.set('username', req.body.username);
-    user.set('password', passwordHash.generate('password123'));
+    user.set('password', passwordHash.generate(req.body.password));
     user.set('email', req.body.email);
 
     user.save().then(function (model) {
@@ -43,12 +43,12 @@ router.get('/', (req, res, next) => {
 //UPDATE USER PASSWORD
 router.put('/', (req, res, next) => {
 
-    var user = new User().where({ 'username': req.body.username, 'password': req.body.password }).fetch();
+    var user = new User().where({ 'username': req.body.username, 'password':  passwordHash.generate(req.body.password)}).fetch();
     if (user.id != null) {
-        new User().where({'username': req.body.username, 'password':req.body.password}).fetch().then(function (user) {
+        new User().where({'username': req.body.username, 'password': passwordHash.generate(req.body.password)}).fetch().then(function (user) {
             user.save(
                 {
-                    password: req.body.newPassword
+                    password: passwordHash.generate(req.body.password)
                 }
             ).then(function (saved) {
                 res.json({ saved });
@@ -68,7 +68,7 @@ router.put('/', (req, res, next) => {
 //DELETE UPORABNIK
 
 router.delete('/', (req, res, next) => {
-    new User().where({ 'username': req.body.username, 'password': req.body.password }).destroy().then(function (destroyed) {
+    new User().where({ 'username': req.body.username, 'password':  passwordHash.generate(req.body.password)}).destroy().then(function (destroyed) {
         res.json({ destroyed });
     });
 });
