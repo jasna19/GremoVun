@@ -64,6 +64,14 @@ router.put('/', (req, res, next) => {
 }
 );
 
+//DELETE UPORABNIK
+
+router.delete('/', (req, res, next) => {
+    new User().where({ 'username': req.body.username, 'password': req.body.password }).destroy().then(function (destroyed) {
+        res.json({ destroyed });
+    });
+});
+
 
 
 module.exports = router;
