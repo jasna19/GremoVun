@@ -1,13 +1,14 @@
 let express = require('express');
 var router = express.Router();
-var User = require('../models/User')
+var User = require('../models/User');
+var passwordHash = require('password-hash');
 
 //ADD USER
 router.post('/', (req, res, next) => {
 
     var user = new User();
     user.set('username', req.body.username);
-    user.set('password', req.body.password);
+    user.set('password', passwordHash.generate('password123'));
     user.set('email', req.body.email);
 
     user.save().then(function (model) {
