@@ -5,6 +5,7 @@ let config = require('../knexfile');
 let knex = require('knex')(config.development),
     bookshelf = require('bookshelf')(knex);
 
+//MODEL: User
 var User = bookshelf.Model.extend({
     tableName: 'users',
     messages: function () {
@@ -16,22 +17,12 @@ var User = bookshelf.Model.extend({
     friendships: function () {
         return this.hasMany(Friendship)
     },
-    adminGroups: function()
-    {
+    adminGroups: function () {
         return this.hasMany(Group)
     },
-    memberGroups: function()
-    {
+    memberGroups: function () {
         return this.hasMany(Users_group)
     }
-
-
-
-
 });
 
-
-
-
-
-//USLESS 
+module.exports = User;
