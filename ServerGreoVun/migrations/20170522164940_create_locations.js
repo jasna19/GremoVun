@@ -4,8 +4,8 @@ exports.up = function(knex, Promise) {
         table.increments();
         table.double('latitude').notNullable();
         table.double('longitude').notNullable();
-        table.integer('user_id').references('id').inTable('users').notNullable();
-        table.timestamps();
+        table.integer('user_id').references('id').inTable('users').notNullable().unique();
+        table.timestamps(true, true);
     })
 };
 

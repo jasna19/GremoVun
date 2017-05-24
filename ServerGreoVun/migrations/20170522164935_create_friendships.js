@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
         table.integer('user_id').references('id').inTable('uporabniki').notNullable();
         table.integer('friend_id').references('id').inTable('uporabniki').notNullable();
         table.integer('status').notNullable();
-        table.timestamps();
+        table.timestamps(true, true);
     })
 };
 
