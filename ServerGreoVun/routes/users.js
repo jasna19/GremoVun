@@ -22,6 +22,7 @@ router.post('/', (req, res, next) => {
     });
 });
 
+//GET USER BY ID
 router.get('/:id', (req, res, next) => {
     new User().where(function () {
         this.where('id', req.params.id)
@@ -31,12 +32,37 @@ router.get('/:id', (req, res, next) => {
 });
 
 
-
+//GET ALL USERS
 router.get('/', (req, res, next) => {
     new User().fetchAll().then((data) => {
         res.json(data);
     });
 });
+
+//UPDATE USER PASSWORD
+router.put('/', (req, res, next) => {
+
+    var user = new User().where({ 'username': req.body.username, 'password': req.body.password }).fetch();
+    if (user.id != null) {
+        new User().where({'username': req.body.username, 'password':req.body.password}).fetch().then(function (user) {
+            user.save(
+                {
+                    password: req.body.newPassword
+                }
+            ).then(function (saved) {
+                res.json({ saved });
+            });
+        })
+    }
+    else
+    {
+        res.statusCode = 400;
+        res.statusMessage = "Invalid data!"
+        res.json("Wrong username or password");
+        res.end();
+    }
+}
+);
 
 
 
