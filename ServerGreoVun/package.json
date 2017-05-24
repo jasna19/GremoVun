@@ -9,7 +9,7 @@
     "body-parser": "~1.17.1",
     "bookshelf": "^0.10.3",
     "cookie-parser": "~1.4.3",
-    "debug": "~2.6.3",
+    "debug": "^2.6.8",
     "express": "~4.15.2",
     "jade": "~1.11.0",
     "knex": "^0.12.9",
