@@ -42,35 +42,46 @@ router.get('/', (req, res, next) => {
 
 //UPDATE USER PASSWORD
 router.put('/', (req, res, next) => {
-
-    var user = new User().where({ 'username': req.body.username, 'password':  passwordHash.generate(req.body.password)}).fetch();
-    if (user.id != null) {
-        new User().where({'username': req.body.username, 'password': passwordHash.generate(req.body.password)}).fetch().then(function (user) {
-            user.save(
-                {
-                    password: passwordHash.generate(req.body.password)
-                }
-            ).then(function (saved) {
-                res.json({ saved });
-            });
-        })
-    }
-    else
-    {
-        res.statusCode = 400;
-        res.statusMessage = "Invalid data!"
-        res.json("Wrong username or password");
-        res.end();
-    }
-}
-);
+    new User().where('username', req.body.username).fetch().then((data) => {
+        if (data.get('id') != null && passwordHash.verify(req.body.password, data.get("password"))) {
+            new User().where({ 'username': req.body.username, 'password': data.get("password") }).fetch().then(function (user) {
+                var newPassword = passwordHash.generate(req.body.newPassword);
+                user.save(
+                    {
+                        password: newPassword
+                    }
+                ).then(function (saved) {
+                    res.json({ saved });
+                });
+            })
+        }
+        else {
+            res.statusCode = 401;
+            res.statusMessage = "Invalid data!";
+            res.json("Wrong username or password");
+            res.end();
+        }
+    });
+});
 
 //DELETE UPORABNIK
 
 router.delete('/', (req, res, next) => {
-    new User().where({ 'username': req.body.username, 'password':  passwordHash.generate(req.body.password)}).destroy().then(function (destroyed) {
-        res.json({ destroyed });
+    new User().where('username', req.body.username).fetch().then((data) => {
+        if (passwordHash.verify(req.body.password, data.get("password"))) {
+            new User().where({ 'username': req.body.username }).destroy().then(function (destroyed) {
+                res.json({ destroyed });
+            });
+        }
+        else
+        {
+         res.json("Invalid username or password!");
+         res.statusCode=401;
+         res.end();
+        }
+
     });
+
 });
 
 
