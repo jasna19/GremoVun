@@ -7,6 +7,8 @@ var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var locations = require('./routes/locations');
+
 var cors = require('cors');
 
 var app = express();
@@ -25,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/locations', locations);
 app.use('/test', cors(), require('./routes/test'));
 
 
