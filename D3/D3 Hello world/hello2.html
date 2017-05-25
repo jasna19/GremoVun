@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<body>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <p> TO JE ODSTAVEK 1 </p>
+    <p> TO JE ODSTAVEK 2 </p>
+    <p> TO JE ODSTAVEK 3 </p>
+    <button onclick="zamenjaj_barvo_odstavkov()">Zamenjaj barvo odstavkov</button>
+
+
+    <div id="lipsum">
+        <p>
+        </p>
+        <ul>
+            <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+            <li>Integer a odio sit amet mauris aliquet lobortis rhoncus vitae dolor.</li>
+            <li>Aenean ultricies libero id nibh euismod consequat.</li>
+            <li>Nulla scelerisque massa ac vehicula malesuada.</li>
+            <li>Curabitur aliquam arcu vel dui convallis posuere.</li>
+        </ul>
+        <p></p>
+        <p>
+        </p>
+        <ul>
+            <li>Mauris tristique justo id dapibus lobortis.</li>
+            <li>Donec nec lectus tempor, porttitor turpis vel, sollicitudin lorem.</li>
+            <li>Curabitur tristique magna et ex placerat, nec accumsan mauris convallis.</li>
+            <li>Mauris malesuada turpis luctus tortor pellentesque fermentum.</li>
+            <li>Quisque quis tellus sed odio mollis hendrerit vel rutrum lorem.</li>
+        </ul>
+        <p></p>
+        <p>
+        </p>
+        <ul>
+            <li>Donec eget erat rhoncus, tristique odio eu, consectetur diam.</li>
+            <li>Phasellus sed velit id felis fermentum vehicula.</li>
+        </ul>
+        <p></p>
+        <p>
+        </p>
+        <ul>
+            <li>Mauris cursus metus in sapien auctor, facilisis convallis leo imperdiet.</li>
+            <li>Pellentesque fermentum lacus ac commodo lacinia.</li>
+            <li>Nam quis leo porttitor, pellentesque est at, vulputate est.</li>
+            <li>Etiam euismod felis in dui mattis ultrices.</li>
+            <li>Morbi ornare sapien iaculis tempus rhoncus.</li>
+            <li>Pellentesque posuere mi eu tortor varius, placerat sagittis est eleifend.</li>
+        </ul>
+        <p></p>
+        <p>
+        </p>
+        <ul>
+            <li>Sed in mi eget tortor pharetra sodales.</li>
+            <li>Pellentesque convallis leo in vulputate cursus.</li>
+            <li>Sed rhoncus quam eget accumsan tristique.</li>
+        </ul>
+        <p></p>
+    </div>
+
+
+    <button onclick="tranzicija_barv()">Prebarvaj naštevne (li) elemente. Vsak 3 naj bo drugačen!</button>
+
+
+    <script>
+        function zamenjaj_barvo_odstavkov() {
+            var r = parseInt(Math.random() * 255);
+            var g = parseInt(Math.random() * 255);
+            var b = parseInt(Math.random() * 255);
+            var barva = "rgb(" + r + ", " + g + ", " + b + ")";
+            console.log(barva);
+            d3.selectAll("p").style("color", barva);
+        }
+
+        function tranzicija_barv() {
+            d3.selectAll("li").style("color", function (d, i) {
+                return i % 3 ? "#ff22ff" : "#22ff22";
+            });
+
+        }
+    </script>
+
+</body>
+
+</html>

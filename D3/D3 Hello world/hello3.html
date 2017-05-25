@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<body>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+
+    <div id="lipsum">
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut at eleifend nunc. Curabitur id quam felis. Nam vel tristique
+            eros. Nunc auctor est eget odio laoreet, id consectetur nisl vulputate. Aenean sed nibh lacinia, imperdiet enim
+            id, mollis elit. Donec at velit lobortis, pulvinar augue varius, auctor tellus.
+        </p>
+        <p>
+            Nulla condimentum, felis ut elementum laoreet, augue orci ultrices mauris, vitae laoreet justo mi eu eros. Fusce ante dui,
+            fermentum ut luctus vel, sodales quis mi. Mauris ac turpis suscipit, interdum augue nec, convallis ipsum. Nulla
+            facilisi. Nulla faucibus ligula in blandit sollicitudin. Integer eu viverra purus. Praesent tincidunt volutpat
+            velit.
+        </p>
+        <p>
+            Nulla commodo facilisis sapien, a lacinia augue egestas ac. Fusce diam nunc, efficitur ut sem id, rhoncus tempus enim. Fusce
+            tortor lectus, pulvinar ac enim eu, sagittis sollicitudin purus. Nulla eleifend sapien maximus gravida tempor.
+            Quisque sagittis condimentum ipsum, sit amet cursus arcu vulputate non.
+        </p>
+    </div>
+
+    <button onclick="preberi_tip_pisave_iz_array()">Zamenjaj tipe pisav, glede na podatke v polju.</button>
+
+
+    <script>
+        
+
+        function preberi_tip_pisave_iz_array() {
+            d3.selectAll("p")
+            .data(['italic', 'normal', 'oblique'])
+            .style("font-style", function (d) { return d; });
+        }
+
+        function tranzicija_barv() {
+            d3.selectAll("li").style("color", function (d, i) {
+                return i % 3 ? "#ff22ff" : "#22ff22";
+            });
+
+        }
+    </script>
+
+</body>
+
+</html>
