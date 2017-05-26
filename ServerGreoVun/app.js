@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var locations = require('./routes/locations');
+var friendships = require('./routes/friendships');
 
 var cors = require('cors');
 
@@ -25,10 +26,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
-app.use('/locations', locations);
+app.use('/', cors(), index);
+app.use('/users', cors(), users);
+app.use('/locations', cors(), locations);
+app.use('/friendships', cors(), friendships);
+
 app.use('/test', cors(), require('./routes/test'));
+
 
 
 
