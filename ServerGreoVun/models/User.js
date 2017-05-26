@@ -22,7 +22,9 @@ var User = bookshelf.Model.extend({
     },
     memberGroups: function () {
         return this.hasMany(Users_group)
-    }
+    },
+    hasTimestamps: true
+
 });
 
 module.exports = User;

@@ -3,7 +3,6 @@ var router = express.Router();
 var Location = require('../models/Location')
 var User = require('../models/User')
 
-
 //ADD or UPDATE location
 router.put('/', (req, res, next) => {
 
@@ -12,30 +11,26 @@ router.put('/', (req, res, next) => {
     var lat = parseFloat(req.body.latitude);
     var lon = parseFloat(req.body.longitude);
 
-    console.log("Lat: " + lat + " \tLon: " + lon);
-
     new User().where('username', req.body.username).fetch().then((data) => {
         var id = data.get('id');
 
         new Location().where('user_id', id).fetch().then((location) => {
-            if (location.get('id') != null) 
-            {
+            if (location.get('id') != null) {
                 location.set('latitude', lat);
                 location.set('longitude', lon);
-
                 location.save().then(function (model) {
                     res.statusCode = 201;
                     res.statusMessage = "Succesfully added"
-                    res.json(user);
+                    res.json(location);
                 }).catch(function (error) {
+                    console.log(error);
                     res.statusCode = 400;
                     res.statusMessage = "Invalid data!"
                     res.json(error);
                     res.end();
                 });
             }
-            else 
-            {
+            else {
                 var loc = new Location();
                 loc.set('user_id', id);
                 loc.set('latitude', lat);
@@ -45,14 +40,8 @@ router.put('/', (req, res, next) => {
                 });
 
             }
-
-
-
         }
-
         );
-
-
     });
 });
 

@@ -10,7 +10,8 @@ var Location = bookshelf.Model.extend({
     tableName: 'locations',
     users: function () {
         return this.belongsTo(User);
-    }
+    },
+    hasTimestamps: true
 });
 
 module.exports = Location;

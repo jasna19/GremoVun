@@ -14,10 +14,11 @@ var Group = bookshelf.Model.extend({
     admin: function () {
         return this.belongsTo(User);
     },
-    messages: function ()
-    {
+    messages: function () {
         return this.hasMany(Message);
-    }
+    },
+    hasTimestamps: true
+
 });
 
 module.exports = Group;

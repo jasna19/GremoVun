@@ -13,7 +13,8 @@ var Message = bookshelf.Model.extend({
     },
     author: function () {
         return this.belongsTo(User)
-    }
+    },
+    hasTimestamps: true
 });
 
 module.exports = Message;

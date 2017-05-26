@@ -13,7 +13,9 @@ var Friendship = bookshelf.Model.extend({
     },
     friend: function () {
         return this.belongsTo(User, 'friend_id')
-    }
+    },
+    hasTimestamps: true
+
 });
 
 module.exports = Friendship;

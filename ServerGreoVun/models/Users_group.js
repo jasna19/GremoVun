@@ -12,9 +12,11 @@ var Users_group = bookshelf.Model.extend({
     users: function () {
         return this.belongsTo(User);
     },
-    groups: function (){
+    groups: function () {
         return thi.belongsTo(Group);
-    }
+    },
+    hasTimestamps: true
+
 });
 
 module.exports = Users_group;
