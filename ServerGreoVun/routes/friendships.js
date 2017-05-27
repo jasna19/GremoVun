@@ -98,7 +98,7 @@ if(req.body.status == "accept")
 
     new Friendship().where(function () {
         this.where(function () {
-            this.where('user_id', req.body.idUporabnik1).andWhere('friend_id', req.body.idUporabnik2)
+            this.where('user_id',  req.body.idUporabnik1).andWhere('friend_id', req.body.idUporabnik2)
         }).orWhere(function () {
             this.where('user_id', req.body.idUporabnik2).andWhere('friend_id', req.body.idUporabnik1)
         })
