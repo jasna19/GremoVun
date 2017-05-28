@@ -6,12 +6,15 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var index = require('./routes/index');
+
+// Models
 var users = require('./routes/users');
 var locations = require('./routes/locations');
 var friendships = require('./routes/friendships');
+var groups = require('./routes/groups');
+
 
 var cors = require('cors');
-
 var app = express();
 
 // view engine setup
@@ -26,10 +29,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Routes
 app.use('/', cors(), index);
 app.use('/users', cors(), users);
 app.use('/locations', cors(), locations);
 app.use('/friendships', cors(), friendships);
+app.use('/groups', cors(), groups);
+
 
 app.use('/test', cors(), require('./routes/test'));
 
