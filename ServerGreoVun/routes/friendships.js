@@ -58,6 +58,11 @@ router.post('/', (req, res, next) => {
                         });
 
                     }
+                    else {
+                        res.statusCode = 400;
+                        res.statusMessage = "Posiljanje prijateljstva samemu sebi ali pa prijatelj ne obstaja!"
+                        res.end();
+                    }
                 });
             }
             else {
@@ -92,28 +97,69 @@ router.get('/:username', (req, res, next) => {
     });
 });
 
+//PUT DELETE / ACCEPT friendship
 router.put('/', (req, res, next) => {
 
-if(req.body.status == "accept")
+    new User().where('username', req.body.username).fetch().then((user1) => {
+        var idUser1 = user1.get('id');
 
-    new Friendship().where(function () {
-        this.where(function () {
-            this.where('user_id',  req.body.idUporabnik1).andWhere('friend_id', req.body.idUporabnik2)
-        }).orWhere(function () {
-            this.where('user_id', req.body.idUporabnik2).andWhere('friend_id', req.body.idUporabnik1)
-        })
-    }).fetch().then(function (friendship) {
-        friendship.save(
-            {
-                status: 2
+        if (user1 != null) {
+            if (passwordHash.verify(req.body.password, user1.get("password"))) {
+                new User().where('username', req.body.friendname).fetch().then((user2) => {
+                    var idUser2 = user2.get('id');
+                    if (user1 != new User() && user2 != new User() && idUser1 != idUser2) {
+                        if (req.body.status == "accept") {
+                            new Friendship().where(function () {
+                                    this.where('user_id', idUser2).andWhere('friend_id', idUser1)
+                                }).fetch().then(function (friendship) {
+                                friendship.save(
+                                    {
+                                        status: 2
+                                    }
+                                ).then(function (saved) {
+                                    res.json({ saved });
+                                });
+
+                            })
+                        }
+                        else if (req.body.status == "delete") {
+                            new Friendship().where(function () {
+                                this.where(function () {
+                                    this.where('user_id', idUser1).andWhere('friend_id', idUser2)
+                                }).orWhere(function () {
+                                    this.where('user_id', idUser2).andWhere('friend_id', idUser1)
+                                })
+                            }).then(function (destroyed) {
+                                res.json({ destroyed });
+                            });
+                        }
+
+                    }
+                });
             }
-        ).then(function (saved) {
-            res.json({ saved });
-        });
+            else {
+                res.statusCode = 400;
+                res.statusMessage = "Invalid password or user!"
+                res.json(error);
+                res.end();
+            }
+        }
+        else {
+            res.statusCode = 400;
+            res.statusMessage = "User doesn't exist!"
+            res.json(error);
+            res.end();
+        }
 
-    })
-}
-);
+
+    });
+
+
+
+
+
+
+});
 
 
 
