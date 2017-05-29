@@ -12,6 +12,8 @@ var users = require('./routes/users');
 var locations = require('./routes/locations');
 var friendships = require('./routes/friendships');
 var groups = require('./routes/groups');
+var users_groups = require('./routes/users_groups');
+
 
 
 var cors = require('cors');
@@ -35,9 +37,8 @@ app.use('/users', cors(), users);
 app.use('/locations', cors(), locations);
 app.use('/friendships', cors(), friendships);
 app.use('/groups', cors(), groups);
+app.use('/users_groups', cors(), users_groups);
 
-
-app.use('/test', cors(), require('./routes/test'));
 
 
 
