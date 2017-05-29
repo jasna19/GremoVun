@@ -11,9 +11,6 @@ var Message = bookshelf.Model.extend({
     group: function () {
         return this.belongsTo(Group);
     },
-    author: function () {
-        return this.belongsTo(User)
-    },
     hasTimestamps: true
 });
 

@@ -4,6 +4,7 @@ let express = require('express'),
 let config = require('../knexfile');
 let knex = require('knex')(config.development),
     bookshelf = require('bookshelf')(knex);
+var Users_group = require('../models/Users_group');
 
 //MODEL: Group
 var Group = bookshelf.Model.extend({
