@@ -102,16 +102,60 @@ router.post('/', (req, res, next) => {
     });
 });
 
-//ACCEPT DENY REQUEST
+//ACCEPT DENY/DELETE REQUEST
 router.put('/', (req, res, next) => {
     new User().where('username', req.body.username).fetch().then((data) => {
-        if (data.get('id') != null && passwordHash.verify(req.body.password, data.get("password"))) {
-            idUser = data.get('id');
-            console.log("user_ID:"+idUser);
-            new User_Group().where(function () { this.where('name', req.body.name).andWhere('user_id', idUser) }).fetch().then((user_group) => {
-                res.json( user_group );
+        if (data != null && passwordHash.verify(req.body.password, data.get("password"))) {
+            idAdmin = data.get('id');
+            console.log("Admin_ID:" + idAdmin);
+            new Group().where(function () { this.where('name', req.body.name).andWhere('user_id', idAdmin) }).fetch().then((group) => {
+                if (group != null) {
+                    new User().where('username', req.body.user).fetch().then((user) => {
+                        if (user != null) {
+                            idUser = user.get('id');
+                            new User_Group().where(function () { this.where('group_id', group.get('id')).andWhere('user_id', idUser) }).fetch().then((user_group) => {
+                                if (user_group != null) {
+                                    if (req.body.status == 2) {
+                                        user_group.set('status', 2);
+                                        user_group.save().then((saved) => {
+                                            res.json(saved);
+                                        })
+                                    }
+                                    else if (req.body.status == -1) {
+                                        user_group.destroy().then((destroyed) => {
+                                            res.json(destroyed);
+                                        })
+                                    }
+                                    else {
+                                        res.statusCode = 401;
+                                        res.statusMessage = "Invalid data!";
+                                        res.json("Wrong status (not 2=ACCEPT OR -1=DELETE!");
+                                        res.end();
+                                    }
+                                }
+                                else {
+                                    res.statusCode = 401;
+                                    res.statusMessage = "Invalid data!";
+                                    res.json("No user with such username requested access!");
+                                    res.end();
+                                }
+                            });
+                        }
+                        else {
+                            res.statusCode = 401;
+                            res.statusMessage = "Invalid data!";
+                            res.json("No user with such username!");
+                            res.end();
+                        }
+                    });
+                }
+                else {
+                    res.statusCode = 401;
+                    res.statusMessage = "Invalid data!";
+                    res.json("No group with such name or user doesn't admin group!");
+                    res.end();
+                }
             })
-
         }
         else {
             res.statusCode = 401;
@@ -125,9 +169,60 @@ router.put('/', (req, res, next) => {
 
 //LEAVE GROUP
 router.delete('/', (req, res, next) => {
+    new User().where('username', req.body.username).fetch().then((data) => {
+        if (data != null && passwordHash.verify(req.body.password, data.get("password"))) {
+            idUser = data.get('id');
+            new Group().where(function () { this.where('name', req.body.name).andWhere('user_id', idAdmin) }).fetch().then((group) => {
+                if (group != null) {
+                    idGroup = group.get('id');
+                    new User_Group().where(function () { this.where('group_id', group.get('id')).andWhere('user_id', idUser) }).fetch().then((user_group) => {
+                        if (user_group != null) {
+                            if (req.body.status == 2) {
+                                user_group.set('status', 2);
+                                user_group.save().then((saved) => {
+                                    res.json(saved);
+                                })
+                            }
+                            else if (req.body.status == -1) {
+                                user_group.destroy().then((destroyed) => {
+                                    res.json(destroyed);
+                                })
+                            }
+                            else {
+                                res.statusCode = 401;
+                                res.statusMessage = "Invalid data!";
+                                res.json("Wrong status (not 2=ACCEPT OR -1=DELETE!");
+                                res.end();
+                            }
+                        }
+                        else {
+                            res.statusCode = 401;
+                            res.statusMessage = "Invalid data!";
+                            res.json("No user with such username requested access!");
+                            res.end();
+                        }
+                    });
 
-});
+                }
+                else {
+                    res.statusCode = 401;
+                    res.statusMessage = "Invalid data!";
+                    res.json("Group doesn't exist!");
+                    res.end();
+                }
+            });
+
+
+        }
+        else {
+            res.statusCode = 401;
+            res.statusMessage = "Invalid data!";
+            res.json("Wrong username or password");
+            res.end();
+        }
+    });
 
 
 
-module.exports = router;
+
+    module.exports = router;

@@ -129,7 +129,7 @@ router.put('/', (req, res, next) => {
                                 }).orWhere(function () {
                                     this.where('user_id', idUser2).andWhere('friend_id', idUser1)
                                 })
-                            }).then(function (destroyed) {
+                            }).destroy().then(function (destroyed) {
                                 res.json({ destroyed });
                             });
                         }
