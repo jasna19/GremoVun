@@ -172,28 +172,16 @@ router.delete('/', (req, res, next) => {
     new User().where('username', req.body.username).fetch().then((data) => {
         if (data != null && passwordHash.verify(req.body.password, data.get("password"))) {
             idUser = data.get('id');
-            new Group().where(function () { this.where('name', req.body.name).andWhere('user_id', idAdmin) }).fetch().then((group) => {
+            new Group().where(function () { this.where('name', req.body.name) }).fetch().then((group) => {
                 if (group != null) {
                     idGroup = group.get('id');
                     new User_Group().where(function () { this.where('group_id', group.get('id')).andWhere('user_id', idUser) }).fetch().then((user_group) => {
                         if (user_group != null) {
-                            if (req.body.status == 2) {
-                                user_group.set('status', 2);
-                                user_group.save().then((saved) => {
-                                    res.json(saved);
-                                })
-                            }
-                            else if (req.body.status == -1) {
-                                user_group.destroy().then((destroyed) => {
-                                    res.json(destroyed);
-                                })
-                            }
-                            else {
-                                res.statusCode = 401;
-                                res.statusMessage = "Invalid data!";
-                                res.json("Wrong status (not 2=ACCEPT OR -1=DELETE!");
-                                res.end();
-                            }
+                            user_group.destroy().then((destroyed) => {
+                                res.json(destroyed);
+                            })
+
+
                         }
                         else {
                             res.statusCode = 401;
@@ -204,6 +192,7 @@ router.delete('/', (req, res, next) => {
                     });
 
                 }
+                
                 else {
                     res.statusCode = 401;
                     res.statusMessage = "Invalid data!";
@@ -221,8 +210,9 @@ router.delete('/', (req, res, next) => {
             res.end();
         }
     });
+});
 
 
 
 
-    module.exports = router;
+module.exports = router;
